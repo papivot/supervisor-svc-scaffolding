@@ -1,10 +1,29 @@
 #!/bin/bash
 
+display_usage() { 
+	echo "This script must be run with two arguments." 
+	echo -e "\nUsage: $0 name-of-service version-details[x.y.z]" 
+  echo -e "\nExample: ./supsvc-scaffold.sh argocd-operator 0.8.0 \n"
+	} 
+# if less than two arguments supplied, display usage 
+	if [  $# -le 1 ] 
+	then 
+		display_usage
+		exit 1
+	fi 
+ 
+# check whether user had supplied -h or --help . If yes display usage 
+	if [[ ( $@ == "--help") ||  $@ == "-h" ]] 
+	then 
+		display_usage
+		exit 0
+	fi 
+
 ##################################################
 #### Create the top level folders
 ##################################################
-mkdir -p $1
-cd $1
+mkdir -p "$1"
+cd "$1" || exit
 mkdir -p distribution
 mkdir -p config/_ytt_lib/bundle/config
 mkdir -p config/_ytt_lib/bundle/config/overlays
