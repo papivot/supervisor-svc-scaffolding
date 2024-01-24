@@ -40,15 +40,15 @@ cat > config/config.yaml << EOF
 #@ load("@ytt:data", "data")
 
 #! export vendored $1 bundle as a var
-#@ $1_lib = library.get("bundle/config")
+#@ ${1//-}_lib = library.get("bundle/config")
 
 #! define a map for values to be passed to vendored $1 lib
-#@ def $1_values():
+#@ def ${1//-}_values():
 namespace: #@ data.values.namespace
 #@ end
 
 #! render yaml from vendored lib with data values
---- #@ template.replace($1_lib.with_data_values($1_values()).eval())
+--- #@ template.replace(${1//-}_lib.with_data_values(${1//-}_values()).eval())
 EOF
 
 #### Create config/values.yaml file #####
@@ -72,14 +72,14 @@ kind: Namespace
 metadata:
   name: #@ data.values.namespace
 
-#@overlay/match by=overlay.subset({"metadata": {"namespace": "$1"}}), expects=10
+#@overlay/match by=overlay.subset({"metadata": {"namespace": "$1"}}), expects="0+"
 ---
 metadata:
   namespace: #@ data.values.namespace
 
 #@ crb=overlay.subset({"kind":"ClusterRoleBinding"})
 #@ rb=overlay.subset({"kind":"RoleBinding"})
-#@overlay/match by=overlay.or_op(crb, rb), expects=3
+#@overlay/match by=overlay.or_op(crb, rb), expects="0+"
 ---
 subjects:
 #@overlay/match by=overlay.subset({"namespace": "$1"})
@@ -88,7 +88,7 @@ subjects:
 EOF
 
 #### Create top level package-build.yaml sample file #####
-cat > package-build.yaml << EOF
+cat > package-build.yml << EOF
 apiVersion: kctrl.carvel.dev/v1alpha1
 kind: PackageBuild
 metadata:
@@ -117,7 +117,7 @@ spec:
 EOF
 
 #### Create top level package-resources.yaml sample file #####
-cat > package-resources.yaml << EOF
+cat > package-resources.yml << EOF
 apiVersion: data.packaging.carvel.dev/v1alpha1
 kind: Package
 metadata:
