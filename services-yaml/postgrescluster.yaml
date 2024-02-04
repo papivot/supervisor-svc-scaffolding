@@ -1,0 +1,40 @@
+apiVersion: postgres-operator.crunchydata.com/v1beta1
+kind: PostgresCluster
+metadata:
+  name: sappgdb
+  namespace: demo1
+spec:
+  postgresVersion: 15
+  service:
+    type: LoadBalancer
+  instances:
+    - name: instance1
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/os
+                operator: In
+                values:
+                - CRX
+      replicas: 1
+      dataVolumeClaimSpec:
+        storageClassName: vc01cl01-t0compute
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi
+  backups:
+    pgbackrest:
+      repos:
+        - name: repo1
+          volume:
+            volumeClaimSpec:
+              storageClassName: vc01cl01-t0compute
+              accessModes:
+                - ReadWriteOnce
+              resources:
+                requests:
+                  storage: 1Gi

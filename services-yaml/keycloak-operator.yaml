@@ -1,0 +1,47 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  creationTimestamp: null
+  name: keycloak-operator.fling.vsphere.vmware.com
+spec:
+  categories:
+  - CI/CD
+  - GitOps
+  displayName: keycloak-operator
+  iconSVGBase64: none
+  longDescription: keycloak-operator is used to deploy instance of .....
+  maintainers:
+  - name: First
+  - name: Second
+  - name: Third
+  providerName: VMware
+  shortDescription: keycloak-operator is used to deploy ....
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  creationTimestamp: null
+  name: keycloak-operator.fling.vsphere.vmware.com.23.0.6
+spec:
+  refName: keycloak-operator.fling.vsphere.vmware.com
+  releasedAt: "2024-02-04T22:05:28Z"
+  template:
+    spec:
+      deploy:
+      - kapp: {}
+      fetch:
+      - imgpkgBundle:
+          image: harbor.navneet.pro/library/keycloak-operator@sha256:d076279cc020db602d3882501b6374df835689c5c43f9830ad3c6075cf723711
+      template:
+      - ytt:
+          paths:
+          - ./config
+      - kbld:
+          paths:
+          - '-'
+          - .imgpkg/images.yml
+  valuesSchema:
+    openAPIv3:
+      default: null
+      nullable: true
+  version: 23.0.6

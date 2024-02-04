@@ -1,0 +1,47 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  creationTimestamp: null
+  name: postgres-operator.fling.vsphere.vmware.com
+spec:
+  categories:
+  - CI/CD
+  - GitOps
+  displayName: postgres-operator
+  iconSVGBase64: none
+  longDescription: postgres-operator is used to deploy instance of .....
+  maintainers:
+  - name: First
+  - name: Second
+  - name: Third
+  providerName: VMware
+  shortDescription: postgres-operator is used to deploy ....
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  creationTimestamp: null
+  name: postgres-operator.fling.vsphere.vmware.com.0.0.1
+spec:
+  refName: postgres-operator.fling.vsphere.vmware.com
+  releasedAt: "2024-01-24T00:30:29Z"
+  template:
+    spec:
+      deploy:
+      - kapp: {}
+      fetch:
+      - imgpkgBundle:
+          image: harbor.navneet.pro/library/postgres-operator@sha256:131ce93367529857b59ab78b4a097190b8b26f4b68a6d056534f0fecccf5d053
+      template:
+      - ytt:
+          paths:
+          - ./config
+      - kbld:
+          paths:
+          - '-'
+          - .imgpkg/images.yml
+  valuesSchema:
+    openAPIv3:
+      default: null
+      nullable: true
+  version: 0.0.1
