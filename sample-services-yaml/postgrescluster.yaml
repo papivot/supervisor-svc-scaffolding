@@ -1,9 +1,15 @@
 apiVersion: postgres-operator.crunchydata.com/v1beta1
 kind: PostgresCluster
 metadata:
-  name: sappgdb
+  name: keycloak-pgdb
   namespace: demo1
 spec:
+  users:
+    - name: postgres
+    - name: keycloak-admin
+      databases:
+        - keycloak-pgdb
+      options: "SUPERUSER"
   postgresVersion: 15
   service:
     type: LoadBalancer
