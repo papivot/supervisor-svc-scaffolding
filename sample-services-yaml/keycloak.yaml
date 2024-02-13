@@ -1,0 +1,81 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: keycloak-cert
+  namespace: demo1
+spec:
+  secretName: keycloak-tls
+  issuerRef:
+    name: ca-clusterissuer
+    kind: ClusterIssuer
+    group: cert-manager.io
+  commonName: keycloak.h2o-4-22876.h2o.vmware.com
+  dnsNames:
+    - keycloak.h2o-4-22876.h2o.vmware.com
+    - keycloak-admin.h2o-4-22876.h2o.vmware.com
+---
+apiVersion: k8s.keycloak.org/v2alpha1
+kind: Keycloak
+metadata:
+  name: demo1-keycloak
+  namespace: demo1
+spec:
+  instances: 1
+  db:
+    vendor: postgres
+    database: keycloak-pgdb
+    host: 10.220.3.22
+    usernameSecret:
+      name: keycloak-pgdb-pguser-keycloak-admin
+      key: user
+    passwordSecret:
+      name: keycloak-pgdb-pguser-keycloak-admin
+      key: password
+  http:
+    httpEnabled: true
+    httpPort: 8080
+  hostname:
+    hostname: keycloak.h2o-4-22876.h2o.vmware.com
+    admin: keycloak-admin.h2o-4-22876.h2o.vmware.com
+    strict: false
+    strictBackchannel: false
+  ingress:
+    enabled: false
+  additionalOptions:
+  - name: proxy
+    value: edge
+  unsupported:
+    podTemplate:
+      spec:
+        nodeSelector:
+          kubernetes.io/os: CRX
+        containers:
+        - name: keycloak
+          resources:
+            requests:
+              memory: "1000Mi"
+              cpu: "1"
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: keycloak-network-policy
+  namespace: demo1
+spec:
+  podSelector:
+    matchLabels:
+      app: keycloak
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: svc-contour-domain-c8
+    - podSelector:
+        matchLabels:
+          app: contour
+    ports:
+    - protocol: TCP
+      port: 8080
