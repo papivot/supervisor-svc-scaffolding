@@ -1,0 +1,58 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: argocd-cert
+  namespace: demo1
+spec:
+  secretName: argocd-tls
+  issuerRef:
+    name: ca-clusterissuer
+    kind: ClusterIssuer
+    group: cert-manager.io
+  commonName: argocd.h2o-4-22876.h2o.vmware.com
+  dnsNames:
+    - argocd.h2o-4-22876.h2o.vmware.com
+---
+apiVersion: argoproj.io/v1beta1
+kind: ArgoCD
+metadata:
+  name: demo1-argocd
+  namespace: demo1
+  labels:
+    example: basic
+spec:
+  nodePlacement:
+    nodeSelector:
+      kubernetes.io/os: CRX
+  server:
+    host: argocd.h2o-4-22876.h2o.vmware.com
+    insecure: true
+    service:
+      type: ClusterIP
+  redis:
+    image: harbor.navneet.pro/proxy-cache/library/redis
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: argocd-network-policy
+  namespace: demo1
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: demo1-argocd-server
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: svc-contour-domain-c8
+    - podSelector:
+        matchLabels:
+          app: contour
+# This is the port if the pod and not the service
+    ports:
+    - protocol: TCP
+      port: 8080

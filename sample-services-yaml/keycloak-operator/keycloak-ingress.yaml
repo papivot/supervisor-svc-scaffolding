@@ -1,0 +1,35 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: keycloak-ingress1
+  namespace: demo1
+  annotations:
+    ingress.kubernetes.io/force-ssl-redirect: "true"
+    kubernetes.io/ingress.class: contour
+spec:
+  tls:
+  - secretName: keycloak-tls
+    hosts:
+    - keycloak.h2o-4-22876.h2o.vmware.com
+    - keycloak-admin.h2o-4-22876.h2o.vmware.com
+  rules:
+  - host: keycloak.h2o-4-22876.h2o.vmware.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: demo1-keycloak-service
+            port:
+              number: 8080
+  - host: keycloak-admin.h2o-4-22876.h2o.vmware.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: demo1-keycloak-service
+            port:
+              number: 8080

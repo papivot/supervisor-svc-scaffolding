@@ -1,0 +1,47 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  creationTimestamp: null
+  name: kyverno.fling.vsphere.vmware.com
+spec:
+  categories:
+  - CI/CD
+  - GitOps
+  displayName: kyverno
+  iconSVGBase64: none
+  longDescription: kyverno is used to deploy instance of .....
+  maintainers:
+  - name: First
+  - name: Second
+  - name: Third
+  providerName: VMware
+  shortDescription: kyverno is used to deploy ....
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  creationTimestamp: null
+  name: kyverno.fling.vsphere.vmware.com.1.11.0
+spec:
+  refName: kyverno.fling.vsphere.vmware.com
+  releasedAt: "2024-02-13T18:20:43Z"
+  template:
+    spec:
+      deploy:
+      - kapp: {}
+      fetch:
+      - imgpkgBundle:
+          image: harbor.navneet.pro/library/kyverno@sha256:2ed585c38b37a93faaf24400544cafff92df2838841f0621728553d4fa6a427e
+      template:
+      - ytt:
+          paths:
+          - ./config
+      - kbld:
+          paths:
+          - '-'
+          - .imgpkg/images.yml
+  valuesSchema:
+    openAPIv3:
+      default: null
+      nullable: true
+  version: 1.11.0

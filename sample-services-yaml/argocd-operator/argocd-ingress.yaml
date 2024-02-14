@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: argocd-ingress1
+  namespace: demo1
+  annotations:
+    ingress.kubernetes.io/force-ssl-redirect: "true"
+    kubernetes.io/ingress.class: contour
+spec:
+  tls:
+  - secretName: argocd-tls
+    hosts:
+    - argocd.h2o-4-22876.h2o.vmware.com
+  rules:
+  - host: argocd.h2o-4-22876.h2o.vmware.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: demo1-argocd-server
+            port:
+              number: 80
