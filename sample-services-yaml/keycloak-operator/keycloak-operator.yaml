@@ -24,14 +24,14 @@ metadata:
   name: keycloak-operator.fling.vsphere.vmware.com.23.0.6
 spec:
   refName: keycloak-operator.fling.vsphere.vmware.com
-  releasedAt: "2024-02-04T22:05:28Z"
+  releasedAt: "2024-02-05T16:48:59Z"
   template:
     spec:
       deploy:
       - kapp: {}
       fetch:
       - imgpkgBundle:
-          image: harbor.navneet.pro/library/keycloak-operator@sha256:d076279cc020db602d3882501b6374df835689c5c43f9830ad3c6075cf723711
+          image: harbor.navneet.pro/library/keycloak-operator@sha256:19335d7e4e499a32d36e1abfe4ae4ce36e087eca7306bbefd1893922f8fd2086
       template:
       - ytt:
           paths:
