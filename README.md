@@ -1,6 +1,8 @@
 # Scaffolding for Generating Supervisor Services Manifests
 
-Use this repository to create your own **Expermental Supervisor Service**. The manifest generated through this process can be deployed on a vSphere 8.0.1+ environment through a [Supervisor Service deployment methodology](https://docs.vmware.com/en/VMware-vSphere/8.0/vsphere-with-tanzu-services-workloads/GUID-052CF490-4B77-4CA2-8A4C-8624718ADA4E.html). .
+Use this repository to create your own **Experimental Supervisor Service**. Users can deploy the manifest generated through this process on a vSphere 8.0.1+ environment using the [Supervisor Service deployment methodology](https://docs.vmware.com/en/VMware-vSphere/8.0/vsphere-with-tanzu-services-workloads/GUID-052CF490-4B77-4CA2-8A4C-8624718ADA4E.html). These are experimental and should not be used in production environments. 
+
+The author has a blog article on [Medium](https://navneet-verma.medium.com/authoring-and-installing-argocd-operator-as-a-supervisor-service-on-vcenter-9c175b15d251?source=friends_link&sk=37f83ced21bfe222b2ccbc9f18e90e93) that discusses how to use this repository to generate your custom Supervisor Service. 
 
 ### Prerequisites
 
