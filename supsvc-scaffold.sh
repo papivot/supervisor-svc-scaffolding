@@ -213,9 +213,9 @@ fi
 
 echo 
 echo
-echo "1. Download/Create your $1 product binaries, repositiories and other artifacts to the [[$1/distribution]] folder."
+echo "1. Download/Create your $1 product binaries, repositories and other artifacts to the [[$1/distribution]] folder."
 echo
-echo "2. Create, modify and update the Kubernetes manifest in the distrubution folder. Once the required Kubernetes manifest files are ready, please move all the YAML manifests to [[$1/config/_ytt_lib/bundle/config/upstream]] folder."
+echo "2. Create, modify and update the Kubernetes manifest in the distribution folder. Once the required Kubernetes manifest files are ready, please move all the YAML manifests to [[$1/config/_ytt_lib/bundle/config/upstream]] folder."
 echo
 echo "3. Sample namespace modification YTT overlay is provided in the [[$1/config/_ytt_lib/bundle/config/overlays]] folder."
 echo
